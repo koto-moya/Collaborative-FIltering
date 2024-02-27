@@ -2,7 +2,7 @@ from fastai.collab import *
 from fastai.tabular.all import *
 
 class Trainer():
-    def __init__(self, model, train_data, valid_data, wd = 0.0, lr = 0.003, epochs = 100):
+    def __init__(self, model, train_data, valid_data, wd = 0.0, lr = 0.003, epochs = 5):
         self.model = model
         self.train_data = train_data
         self.valid_data = valid_data
@@ -15,8 +15,10 @@ class Trainer():
         for i in range(self.epochs):
             self.current_epoch = i
             self.train()
+            print(self.loss)
     
     def train(self):
+        #print(self.train_data)
         for x,y in self.train_data:
             preds = self.model(x)
             self.loss = self.rmse(preds, y)

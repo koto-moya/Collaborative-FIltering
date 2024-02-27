@@ -13,10 +13,10 @@ class DotProduct(Module):
         self.y_range  = y_range
             
     def forward(self, x):
-        users = self.user_factors[x[:,0]]
-        items  = self.item_factors[x[:,1]]
+        users = self.user_factors[x[:,0]-1]
+        items  = self.item_factors[x[:,1]-1]
         res = (users*items).sum(dim=1, keepdim=True)
-        res += self.user_bias[x[:,0]] + self.item_bias[x[:,1]]
+        res += self.user_bias[x[:,0]-1] + self.item_bias[x[:,1]-1]
         return sigmoid_range(res, *self.y_range)
     
 

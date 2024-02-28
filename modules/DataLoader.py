@@ -1,6 +1,4 @@
-from fastai.collab import *
-from fastai.tabular.all import *
-import pandas as pd
+import torch
 
 class CFDL():
     '''DataLoader for tabular data'''

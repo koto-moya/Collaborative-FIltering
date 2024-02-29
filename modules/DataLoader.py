@@ -20,8 +20,9 @@ class CFDL():
     def batcher(self, df):
         return [df[i*self.bs:self.bs*(i+1)] for i in range((len(df) + self.bs - 1)//self.bs)]
     
-    def tuplizer(self, lst):
-        return [(torch.tensor(df.iloc[:, 0:2].values), torch.tensor(df.iloc[:, 2:3].values)) for df in lst]
+    def tuplizer(self, lst): # "cpu")
+        device = torch.device("cpu")#"mps" if torch.backends.mps.is_available() else "cpu")
+        return [(torch.tensor(df.iloc[:, 0:2].values, device=device), torch.tensor(df.iloc[:, 2:3].values, device=device)) for df in lst]
 
     def loader(self):
         train, valid = self.splitter()

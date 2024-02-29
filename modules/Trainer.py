@@ -1,27 +1,34 @@
 from modules.functions import func
 import torch
+import time
 
-class Trainer():
-    def __init__(self, model, train_data, valid_data, wd = 0.1, lr = 0.005, epochs = 5):
+class Trainer(): # "cpu")
+    def __init__(self, model, train_data, valid_data, wd = 0.1, lr = 0.005, epochs = 5, loss_func=func.rmse()):
+        self.device = torch.device("cpu")#"mps" if torch.backends.mps.is_available() else "cpu") 
         self.model = model
         self.train_data = train_data
         self.valid_data = valid_data
         self.lr = lr
         self.epochs = epochs
-        self.loss = torch.tensor([[0]])
+        self.loss = torch.tensor([[0]], device = self.device)
         self.wd = wd 
+        self.loss_func = loss_func
     
     def train_loop(self):
+        start_time=time.time()
         for i in range(self.epochs):
             self.current_epoch = i
             self.train()
             self.view()
+        end_time = time.time()
+        print((end_time - start_time)/60,  "mins")
         return self.model
     
     def train(self):
+        
         for x,y in self.train_data:
             preds = self.model(x)
-            self.loss = func.rmse(preds, y)
+            self.loss = self.loss_func(preds, y)
             self.loss.backward()
             self.update_params()
 
@@ -32,7 +39,7 @@ class Trainer():
             param.grad = None
 
     def validate_epoch(self):
-        vl = [func.rmse(self.model(x),y) for x,y in self.valid_data]
+        vl = [self.loss_func(self.model(x),y) for x,y in self.valid_data]
         return round(torch.stack(vl).mean().item(), 4)
     
     def view(self):

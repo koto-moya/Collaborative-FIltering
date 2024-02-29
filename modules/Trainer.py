@@ -3,7 +3,7 @@ import torch
 import time
 
 class Trainer(): # "cpu")
-    def __init__(self, model, train_data, valid_data, wd = 0.1, lr = 0.005, epochs = 5, loss_func=func.rmse()):
+    def __init__(self, model, train_data, valid_data, wd = 0.1, lr = 0.005, epochs = 5, loss_func=func.rmse):
         self.device = torch.device("cpu")#"mps" if torch.backends.mps.is_available() else "cpu") 
         self.model = model
         self.train_data = train_data

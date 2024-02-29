@@ -6,8 +6,12 @@ class func:
         return torch.sigmoid(x) * (high-low) + low
 
     @staticmethod
+    def mse(preds, y):
+        return ((preds - y)**2).mean()
+    
+    @staticmethod
     def rmse(preds, y):
-        return ((preds - y)**2).mean().sqrt()
+        return func.mse(preds, y).sqrt()
     
     @staticmethod
     def softmax(preds):

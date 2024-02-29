@@ -25,7 +25,6 @@ class Trainer(): # "cpu")
         return self.model
     
     def train(self):
-        
         for x,y in self.train_data:
             preds = self.model(x)
             self.loss = self.loss_func(preds, y)

@@ -35,3 +35,25 @@ class SimpleNN(nn.Module):
         x = self.ReLU(x)
         x = self.linear2(x)
         return x
+    
+
+class CollabNN(nn.Module):
+    def __init__(self, embds ,n_act = 300, y_range=(0,5.5)):
+        super().__init__()
+        self.user_factors = create_params([*embds['user']])
+        # item factors is a list of differntly sized tensors, 1 for each 'item'. tensor shape (len(set(item)), # of factors)
+        self.item_factors = [create_params([*value]) for key,value in embds.items() if key != 'user']
+        self.item_sz = sum([value[1] for key,value in embds.items() if key != 'user'])
+        self.layers = nn.Sequential(
+            nn.Linear(embds['user'][1]+self.item_sz, n_act),
+            nn.ReLU(),
+            nn.Linear(n_act, 5)
+        )
+        self.y_range  = y_range
+
+    def forward(self, x):
+        #print(x.shape, len(self.item_factors[0]))
+        embds = self.user_factors[x[:,0]], torch.cat([self.item_factors[i-1][x[:,i]] for i in range(x.shape[1]) if i != 0], dim=1)
+        #print(torch.cat(embds, dim=1).shape)
+        x = self.layers(torch.cat(embds, dim=1))
+        return func.sigmoid_range(x, *self.y_range)

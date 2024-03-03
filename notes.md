@@ -159,7 +159,7 @@ Results: Loss: 0.1812155693769455 |  Validate: 0.9876 |  Epoch: 490 |  lr: 0.03 
 
 Results at Epoch 310: Loss: 0.6833301186561584 |  Validate: 0.9081 |  Epoch: 300 |  lr: 0.03
 ---------------
-hyperparameters:(factors=100, lr=0.018 wd = 0.00001, epochs=500)
+hyperparameters:(bs=64,  factors=100, lr=0.018 wd = 0.00001, epochs=500)
 
 Results: Loss: 0.8128405809402466 |  Validate: 0.9033 |  Epoch: 499 |  lr: 0.018
 
@@ -182,7 +182,21 @@ Ended up fixing the model, it is still slightly different than the model in the 
 
 # Transfer the model to a Deep Learning Architecture
 
-I decided not to do this portion since I was happy with how the Collab model turned out.  
+I decided not to do this portion since I was happy with how the Collab model turned out. 
+
+Now the next challenge is to get this model to run on mps which might melt my brain if I get the Conv2dPooling error again.
+
+# Running on MPS
+
+Okay so it turns out that MPS is kinda trash for this model.  I think it does better with larger batch sizes or just larger workloads in general.  Tabling this for now, the CPU performance is more than enough for what I need.  ~5x faster on the CPU.
+
+# More Optimization
+
+I need to start comparing the validation metric (rmse) with the standard deviation and variance of the dataset to get an idea of performance.  
+
+
+
+
 
 
 

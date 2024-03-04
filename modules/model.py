@@ -3,7 +3,7 @@ from torch import nn
 from modules.functions import func
 
 def create_params(size): #"cpu")
-    device = torch.device("cpu")#"mps" if torch.backends.mps.is_available() else "cpu")
+    device = torch.device("cpu")#"mps" if torch.backends.mps.is_available() else "cpu")#"cpu")
     return nn.Parameter(torch.zeros(*size, device=device).normal_(0, 0.01))
 
 class DotProduct(nn.Module):

@@ -23,7 +23,7 @@ class CFDL():
     
     def tuplizer(self, lst): # "cpu")
         # Need User Column, item columns, prediction column
-        device = torch.device("cpu")#"mps" if torch.backends.mps.is_available() else "cpu")
+        device = torch.device("cpu")#"mps" if torch.backends.mps.is_available() else "cpu")#"cpu")
         return [(torch.tensor(df.iloc[:, 0:2].values, device=device), torch.tensor(df.iloc[:, 2:3].values, device=device)) for df in lst]
 
     def loader(self):

@@ -1,10 +1,11 @@
 from modules.functions import func
 import torch
 import time
+import asyncio
 
 class Trainer(): # "cpu")
     def __init__(self, model, train_data, valid_data, model_type='dot_prod', wd = 0.0, lr = 0.005, epochs = 5, loss_func=func.rmse):
-        self.device = torch.device("cpu")#"mps" if torch.backends.mps.is_available() else "cpu") 
+        self.device = torch.device("cpu")#"mps" if torch.backends.mps.is_available() else "cpu")#"cpu") 
         self.model = model
         self.train_data = train_data
         self.valid_data = valid_data
@@ -21,8 +22,13 @@ class Trainer(): # "cpu")
             self.current_epoch = i
             self.train()
             self.view()
+            end_time = time.time()
+            if i == 0:
+                print(f"projected training time: {self.epochs*(end_time - start_time)/60}",  "mins")
+            elif i%10 == 0:
+                print(f"timer: {(end_time - start_time)/60}",  "mins")
         end_time = time.time()
-        print((end_time - start_time)/60,  "mins")
+        print(f"Total time elapsed: {(end_time - start_time)/60}",  "mins")
         return self.model
     
     def train(self):
@@ -59,7 +65,7 @@ class Trainer(): # "cpu")
     
     def view(self):
         if self.model_type == 'dot_prod':
-            if self.current_epoch%100 == 0: 
+            if self.current_epoch%10 == 0: 
                 print(f"Loss: {self.loss} | ", f"Validate: {self.dot_validate_epoch()} | ", f"Epoch: {self.current_epoch} | ", f"lr: {self.lr}") 
         else:
             if self.current_epoch%10 == 0: 

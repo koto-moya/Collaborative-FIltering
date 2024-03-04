@@ -69,7 +69,7 @@ def one_mil():
     n_movies = max(ratings['MovieID'].unique())+1 
     n_factors = 100
     model = DotProduct(n_users, n_movies, n_factors)#0.018
-    train_model = Trainer(model, train, valid, model_type='dot_prod', lr=0.061, wd = 0.000001, epochs=101, loss_func=func.rmse)
+    train_model = Trainer(model, train, valid, model_type='dot_prod', lr=0.061, wd = 0.000001, epochs=81, loss_func=func.rmse)
     trained_model = train_model.train_loop()
 
 

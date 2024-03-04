@@ -190,9 +190,29 @@ Now the next challenge is to get this model to run on mps which might melt my br
 
 Okay so it turns out that MPS is kinda trash for this model.  I think it does better with larger batch sizes or just larger workloads in general.  Tabling this for now, the CPU performance is more than enough for what I need.  ~5x faster on the CPU.
 
+Now that I am trying out the heavier datasets (1M and 25M) I am wondering if trying MPS again would improve run times. Trying MPS on the 1M dataset proved to still be slower, albeit only 2x slower this time.  I think the increase to 25M will bring MPS back into the picture.  
+
 # More Optimization
 
-I need to start comparing the validation metric (rmse) with the standard deviation and variance of the dataset to get an idea of performance.  
+I need to start comparing the validation metric (rmse) with the standard deviation and variance of the dataset to get an idea of performance. 
+
+
+# 1M Dataset
+
+My Model performed quite well on the 1M dataset.  After trudging through some learning rates, I finally put it to rest with a RMSE of 0.8499 which puts it within striking distance of the best models trained on the dataset.  GLocal-k scores a RMSE of 0.823.  What's surprising is I think I could get the model there with some more tweaking.  
+
+Best performance:
+Loss: 0.5399361848831177 |  Validate: 0.8499 |  Epoch: 80 |  lr: 0.065
+timer: 16.495121785004933 mins 
+
+the model is hella slow, this is largely due to the fact I am using my "from scratch" model.  Transferring all of this to torch functions should get some more speed out of this.  
+
+
+
+
+
+
+
 
 
 
